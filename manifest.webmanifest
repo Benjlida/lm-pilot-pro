@@ -1,37 +1,35 @@
 {
-  "id": "./lm-pilot-pro-uad-v2",
+  "id": "./lm-pilot-pro-uad-v3",
   "name": "LM Pilot Pro UAD",
   "short_name": "LM Pilot Pro",
   "description": "Centre de pilotage logistique UAD — Entrepôt Valence",
   "lang": "fr",
   "start_url": "./index.html",
   "scope": "./",
-
   "display": "standalone",
   "display_override": [
     "window-controls-overlay",
     "standalone"
   ],
-
   "background_color": "#032f26",
   "theme_color": "#054b36",
   "orientation": "landscape",
 
   "icons": [
     {
-      "src": "./icône-192.png",
+      "src": "./icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icône-512.png",
+      "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icône-masquable-512.png",
+      "src": "./icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
