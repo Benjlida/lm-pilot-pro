@@ -1,13 +1,13 @@
-const CACHE = 'lm-pilot-pro-v4';
+const CACHE = 'lm-pilot-pro-v6';
 
 const SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
   './hors ligne.html',
-  './icône-192.png',
-  './icône-512.png',
-  './icône-masquable-512.png',
+  './icon-192.png',
+  './icon-512.png',
+  './icon-maskable-512.png',
   './splash-lm-pilot-pro.jpg'
 ];
 
@@ -37,13 +37,17 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
 
+  // On ne traite que les requêtes GET
   if (request.method !== 'GET') {
     return;
   }
 
   const url = new URL(request.url);
 
-  // Navigation : toujours chercher la version la plus récente sur Internet
+  // ==========================================================
+  // 1. NAVIGATION
+  // Toujours essayer Internet en premier
+  // ==========================================================
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
@@ -66,13 +70,18 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Fichiers GitHub Pages
+  // ==========================================================
+  // 2. FICHIERS DE L'APPLICATION GITHUB PAGES
+  // Cache + mise à jour depuis Internet
+  // ==========================================================
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(request)
         .then(cachedResponse => {
+
           const networkResponse = fetch(request)
             .then(response => {
+
               if (
                 response &&
                 response.status === 200 &&
@@ -95,7 +104,10 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Apps Script et contenus externes : réseau uniquement
+  // ==========================================================
+  // 3. APPS SCRIPT ET CONTENUS EXTERNES
+  // Réseau en priorité
+  // ==========================================================
   event.respondWith(
     fetch(request)
       .catch(() => caches.match(request))
