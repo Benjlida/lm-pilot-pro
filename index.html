@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
-  <meta name="theme-color" content="#043f30">
+  <meta name="theme-color" content="#054b36">
 
   <meta
     name="description"
@@ -18,12 +18,13 @@
   <link rel="manifest" href="./manifest.webmanifest">
 
   <!-- ICÔNES DE L'APPLICATION -->
-  <link rel="icon" type="image/png" href="./icône-192.png">
-  <link rel="apple-touch-icon" href="./icône-192.png">
+  <link rel="icon" type="image/png" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./icon-192.png">
 
   <title>LM Pilot Pro UAD</title>
 
   <style>
+
     :root {
       --green-dark: #032f26;
       --green: #054b36;
@@ -66,8 +67,9 @@
       background: #ffffff;
     }
 
+
     /* =====================================================
-       NOUVEL ÉCRAN DE DÉMARRAGE
+       ÉCRAN DE DÉMARRAGE
        ===================================================== */
 
     .loading {
@@ -106,7 +108,10 @@
       pointer-events: none;
     }
 
-    /* Image professionnelle */
+
+    /* =====================================================
+       IMAGE SPLASH LM PILOT PRO
+       ===================================================== */
 
     .splash-image {
       width: 100%;
@@ -118,24 +123,34 @@
       display: block;
 
       filter:
-        drop-shadow(0 20px 45px rgba(0, 0, 0, 0.25));
+        drop-shadow(
+          0 20px 45px rgba(0, 0, 0, 0.25)
+        );
     }
 
-    /* Petit indicateur de chargement */
+
+    /* =====================================================
+       INDICATEUR DE CHARGEMENT
+
+       Placé volontairement tout en bas pour laisser visible
+       "ENTREPÔT VALENCE" sur l'image.
+       ===================================================== */
 
     .loading-status {
       position: absolute;
 
       left: 50%;
-      bottom: 28px;
+      bottom: 8px;
 
       transform: translateX(-50%);
 
       display: flex;
       align-items: center;
+      justify-content: center;
+
       gap: 10px;
 
-      padding: 8px 15px;
+      padding: 7px 14px;
 
       border-radius: 999px;
 
@@ -148,27 +163,37 @@
 
       letter-spacing: 0.2px;
 
+      white-space: nowrap;
+
       backdrop-filter: blur(8px);
 
       box-shadow:
         0 8px 25px rgba(0, 0, 0, 0.22);
     }
 
+
+    /* =====================================================
+       POINT ANIMÉ
+       ===================================================== */
+
     .loading-dot {
       width: 9px;
       height: 9px;
+
+      flex: 0 0 9px;
 
       border-radius: 50%;
 
       background: var(--lime);
 
       box-shadow:
-        0 0 0 0 rgba(183, 219, 32, 0.6);
+        0 0 0 0 rgba(183, 219, 32, 0.60);
 
       animation: pulse 1.4s infinite;
     }
 
     @keyframes pulse {
+
       0% {
         box-shadow:
           0 0 0 0 rgba(183, 219, 32, 0.65);
@@ -184,6 +209,7 @@
           0 0 0 0 rgba(183, 219, 32, 0);
       }
     }
+
 
     /* =====================================================
        MESSAGE DE SECOURS GOOGLE
@@ -247,15 +273,17 @@
       background: var(--green-light);
     }
 
+
     /* =====================================================
-       RESPONSIVE
+       PETITS ÉCRANS
        ===================================================== */
 
     @media (max-width: 700px) {
 
       .loading-status {
-        bottom: 18px;
-        font-size: 11px;
+        bottom: 6px;
+        font-size: 10px;
+        padding: 6px 11px;
       }
 
       .fallback {
@@ -272,15 +300,20 @@
   </style>
 </head>
 
+
 <body>
 
   <main class="shell">
+
 
     <!-- ===================================================
          SPLASH SCREEN LM PILOT PRO
          =================================================== -->
 
-    <div id="loading" class="loading">
+    <div
+      id="loading"
+      class="loading"
+    >
 
       <img
         src="./splash-lm-pilot-pro.jpg"
@@ -289,15 +322,20 @@
       >
 
       <div class="loading-status">
+
         <span class="loading-dot"></span>
-        <span>Chargement de LM Pilot Pro UAD</span>
+
+        <span>
+          Chargement de LM Pilot Pro UAD
+        </span>
+
       </div>
 
     </div>
 
 
     <!-- ===================================================
-         APPLICATION APPS SCRIPT
+         APPLICATION GOOGLE APPS SCRIPT
          =================================================== -->
 
     <iframe
@@ -312,7 +350,10 @@
          SOLUTION DE SECOURS AUTHENTIFICATION GOOGLE
          =================================================== -->
 
-    <div id="fallback" class="fallback">
+    <div
+      id="fallback"
+      class="fallback"
+    >
 
       <span>
         Si l'authentification Google ne s'affiche pas correctement dans l'application :
@@ -320,7 +361,8 @@
 
       <button
         type="button"
-        onclick="ouvrirExterne()">
+        onclick="ouvrirExterne()"
+      >
         Ouvrir LM Pilot
       </button>
 
@@ -332,7 +374,7 @@
   <script>
 
     /* =====================================================
-       URL OFFICIELLE DU DÉPLOIEMENT APPS SCRIPT
+       URL APPS SCRIPT
        ===================================================== */
 
     const APPS_SCRIPT_URL =
@@ -340,13 +382,15 @@
 
 
     /* =====================================================
-       CONSTRUCTION DE L'URL SELON LE MODULE
+       CONSTRUCTION DE L'URL
        ===================================================== */
 
     function targetUrl() {
 
       const q =
-        new URLSearchParams(window.location.search);
+        new URLSearchParams(
+          window.location.search
+        );
 
       const page =
         (q.get("page") || "").trim();
@@ -377,26 +421,23 @@
       document.getElementById("fallback");
 
 
-    /* Heure de début du splash */
+    /* =====================================================
+       DURÉE MINIMALE DU SPLASH
+       ===================================================== */
 
     const splashStart =
       Date.now();
 
-    /*
-      Le splash restera visible au minimum
-      1,6 seconde.
-
-      Cela évite qu'il disparaisse trop vite.
-    */
-
-    const MIN_SPLASH_TIME = 1600;
+    const MIN_SPLASH_TIME =
+      1600;
 
 
     /* =====================================================
-       CHARGEMENT APPLICATION
+       OUVERTURE DE LM PILOT
        ===================================================== */
 
-    frame.src = targetUrl();
+    frame.src =
+      targetUrl();
 
 
     frame.addEventListener(
@@ -412,25 +453,29 @@
             MIN_SPLASH_TIME - elapsed
           );
 
+
+        /* Masquer le splash */
+
         setTimeout(
           function () {
 
-            loading.classList.add("hidden");
+            loading.classList.add(
+              "hidden"
+            );
 
           },
           remaining
         );
 
 
-        /*
-          Afficher le bouton de secours
-          quelques secondes après.
-        */
+        /* Bouton de secours */
 
         setTimeout(
           function () {
 
-            fallback.classList.add("show");
+            fallback.classList.add(
+              "show"
+            );
 
           },
           remaining + 1800
@@ -459,15 +504,21 @@
        SERVICE WORKER
        ===================================================== */
 
-    if ("serviceWorker" in navigator) {
+    if (
+      "serviceWorker" in navigator
+    ) {
 
       window.addEventListener(
         "load",
         function () {
 
           navigator.serviceWorker
-            .register("./service-worker.js")
-            .catch(console.error);
+            .register(
+              "./service-worker.js"
+            )
+            .catch(
+              console.error
+            );
 
         }
       );
