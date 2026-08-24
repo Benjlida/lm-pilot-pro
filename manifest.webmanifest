@@ -1,17 +1,19 @@
 {
-  "id": "./",
+  "id": "./lm-pilot-pro-uad-v2",
   "name": "LM Pilot Pro UAD",
-  "short_name": "Pilote LM",
+  "short_name": "LM Pilot Pro",
   "description": "Centre de pilotage logistique UAD — Entrepôt Valence",
   "lang": "fr",
   "start_url": "./index.html",
   "scope": "./",
+
   "display": "standalone",
   "display_override": [
     "window-controls-overlay",
     "standalone"
   ],
-  "background_color": "#edf3f0",
+
+  "background_color": "#032f26",
   "theme_color": "#054b36",
   "orientation": "landscape",
 
@@ -38,10 +40,10 @@
 
   "shortcuts": [
     {
-      "name": "Cockpit",
-      "short_name": "Cockpit",
-      "description": "Ouvrir le cockpit de pilotage",
-      "url": "./index.html?page=cockpit"
+      "name": "Pilotage du jour",
+      "short_name": "Pilotage",
+      "description": "Ouvrir le pilotage du jour",
+      "url": "./index.html?page=pilotage"
     },
     {
       "name": "Affichage TV",
@@ -53,7 +55,7 @@
       "name": "Performances",
       "short_name": "KPI",
       "description": "Ouvrir le dashboard des performances",
-      "url": "./index.html?page=kpi"
+      "url": "./index.html?page=dashboard"
     }
   ]
 }
