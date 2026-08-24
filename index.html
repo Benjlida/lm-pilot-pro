@@ -50,6 +50,7 @@
       height: 100%;
       margin: 0;
       padding: 0;
+
       overflow: hidden;
 
       background: var(--green);
@@ -122,10 +123,8 @@
 
     /* =========================================================
        IMAGE LM PILOT PRO
-
-       IMPORTANT :
-       "contain" oblige le navigateur à afficher
-       TOUTE l'image, y compris ENTREPÔT VALENCE.
+       
+       CONTAIN = toute l'image reste visible
        ========================================================= */
 
     .splash-image {
@@ -137,32 +136,31 @@
       height: 100%;
 
       object-fit: contain;
-
       object-position: center center;
 
       display: block;
 
       z-index: 1;
+
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
 
     /* =========================================================
-       BANDEAU DE CHARGEMENT
-
-       Il est remonté volontairement pour ne pas cacher
-       ENTREPÔT VALENCE.
+       PETIT BANDEAU DE CHARGEMENT
+       
+       Placé en bas pour ne plus cacher :
+       - les 4 pictogrammes
+       - le milieu du visuel
+       - le titre
        ========================================================= */
 
     .loading-status {
       position: absolute;
 
       left: 50%;
-
-      /*
-       * On le place suffisamment haut pour laisser
-       * complètement libre le bas de l'image.
-       */
-      bottom: 130px;
+      bottom: 42px;
 
       transform: translateX(-50%);
 
@@ -173,28 +171,28 @@
       align-items: center;
       justify-content: center;
 
-      gap: 12px;
+      gap: 9px;
 
-      min-width: 405px;
+      padding: 8px 16px;
 
-      padding: 13px 25px;
+      border-radius: 22px;
 
-      border-radius: 30px;
-
-      background: rgba(3, 72, 52, 0.94);
+      background: rgba(3, 72, 52, 0.92);
 
       color: #ffffff;
 
-      font-size: 18px;
+      font-size: 13px;
       font-weight: 800;
 
-      letter-spacing: 0.2px;
+      letter-spacing: 0.1px;
+
+      white-space: nowrap;
 
       box-shadow:
-        0 8px 28px rgba(0, 0, 0, 0.28);
+        0 6px 18px rgba(0, 0, 0, 0.20);
 
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
     }
 
 
@@ -203,17 +201,17 @@
        ========================================================= */
 
     .loading-dot {
-      width: 15px;
-      height: 15px;
+      width: 10px;
+      height: 10px;
 
-      flex: 0 0 15px;
+      flex: 0 0 10px;
 
       border-radius: 50%;
 
       background: var(--lime);
 
       box-shadow:
-        0 0 0 7px rgba(215, 255, 49, 0.10);
+        0 0 0 4px rgba(215, 255, 49, 0.10);
 
       animation:
         pulse 1.3s ease-in-out infinite;
@@ -248,7 +246,7 @@
       position: absolute;
 
       left: 50%;
-      bottom: 18px;
+      bottom: 10px;
 
       transform: translateX(-50%);
 
@@ -262,11 +260,9 @@
 
       width: max-content;
 
-      max-width:
-        calc(100% - 30px);
+      max-width: calc(100% - 30px);
 
-      padding:
-        10px 12px;
+      padding: 10px 12px;
 
       border-radius: 12px;
 
@@ -292,15 +288,13 @@
 
       border-radius: 9px;
 
-      padding:
-        8px 12px;
+      padding: 8px 12px;
 
       cursor: pointer;
 
       color: #ffffff;
 
-      background:
-        var(--green);
+      background: var(--green);
 
       font-weight: 900;
 
@@ -309,8 +303,7 @@
 
 
     .fallback button:hover {
-      background:
-        var(--green-dark);
+      background: var(--green-dark);
     }
 
 
@@ -325,38 +318,28 @@
         height: 100%;
 
         object-fit: contain;
-
-        object-position:
-          center center;
+        object-position: center center;
       }
 
 
       .loading-status {
-
-        bottom: 115px;
+        bottom: 38px;
 
         min-width: 0;
 
-        width: auto;
+        max-width: calc(100% - 30px);
 
-        max-width:
-          calc(100% - 30px);
+        padding: 8px 14px;
 
-        padding:
-          11px 18px;
-
-        font-size: 15px;
-
-        white-space: nowrap;
+        font-size: 12px;
       }
 
 
       .loading-dot {
+        width: 9px;
+        height: 9px;
 
-        width: 12px;
-        height: 12px;
-
-        flex-basis: 12px;
+        flex-basis: 9px;
       }
 
     }
@@ -369,39 +352,36 @@
     @media (max-width: 520px) {
 
       .splash-image {
-
         width: 100%;
         height: 100%;
 
         object-fit: contain;
-
-        object-position:
-          center center;
+        object-position: center center;
       }
 
 
       .loading-status {
+        bottom: 32px;
 
-        bottom: 95px;
+        max-width: calc(100% - 30px);
 
-        width:
-          calc(100% - 40px);
+        padding: 7px 12px;
 
-        min-width: 0;
+        font-size: 11px;
 
-        font-size: 13px;
+        white-space: nowrap;
+      }
 
-        padding:
-          10px 14px;
 
-        white-space: normal;
+      .loading-dot {
+        width: 8px;
+        height: 8px;
 
-        text-align: center;
+        flex-basis: 8px;
       }
 
 
       .fallback {
-
         flex-direction: column;
 
         text-align: center;
@@ -419,14 +399,13 @@
 
 
     <!-- =====================================================
-         ÉCRAN DE DÉMARRAGE LM PILOT PRO
+         ÉCRAN DE DÉMARRAGE
          ===================================================== -->
 
     <div
       id="loading"
       class="loading"
     >
-
 
       <img
         class="splash-image"
@@ -444,7 +423,6 @@
         </span>
 
       </div>
-
 
     </div>
 
@@ -493,12 +471,11 @@
   <script>
 
     /* =========================================================
-       URL DE TON APPLICATION GOOGLE APPS SCRIPT
+       URL GOOGLE APPS SCRIPT
        ========================================================= */
 
     const APPS_SCRIPT_URL =
       "https://script.google.com/a/macros/leroymerlin.fr/s/AKfycbx2Mt7fk2DqDT-bH7FruekdPqVLKgF_NdGHOlTleB_7rcTkwgESaJcL3uIdfZLkDzcA6A/exec";
-
 
 
     /* =========================================================
@@ -519,9 +496,7 @@
 
 
       if (!page) {
-
         return APPS_SCRIPT_URL;
-
       }
 
 
@@ -534,50 +509,38 @@
     }
 
 
-
     /* =========================================================
-       ÉLÉMENTS HTML
+       ÉLÉMENTS
        ========================================================= */
 
     const frame =
-      document.getElementById(
-        "lmFrame"
-      );
-
+      document.getElementById("lmFrame");
 
     const loading =
-      document.getElementById(
-        "loading"
-      );
-
+      document.getElementById("loading");
 
     const fallback =
-      document.getElementById(
-        "fallback"
-      );
-
+      document.getElementById("fallback");
 
 
     /* =========================================================
-       OUVERTURE DE LM PILOT
+       CHARGEMENT APPLICATION
        ========================================================= */
 
-    frame.src =
-      targetUrl();
-
+    frame.src = targetUrl();
 
 
     /* =========================================================
-       FIN DU CHARGEMENT
+       UNE FOIS L'APPLICATION CHARGÉE
        ========================================================= */
 
     frame.addEventListener(
       "load",
       function () {
 
-
         /*
-         * On garde le splash visible un court instant.
+         * Petit délai pour afficher proprement
+         * l'écran LM Pilot Pro.
          */
 
         setTimeout(
@@ -593,7 +556,8 @@
 
 
         /*
-         * Bouton de secours Google.
+         * Bouton de secours si problème
+         * d'authentification Google.
          */
 
         setTimeout(
@@ -611,7 +575,6 @@
     );
 
 
-
     /* =========================================================
        OUVERTURE EXTERNE
        ========================================================= */
@@ -627,15 +590,11 @@
     }
 
 
-
     /* =========================================================
-       SERVICE WORKER
+       SERVICE WORKER PWA
        ========================================================= */
 
-    if (
-      "serviceWorker"
-      in navigator
-    ) {
+    if ("serviceWorker" in navigator) {
 
       window.addEventListener(
         "load",
@@ -643,9 +602,7 @@
 
           navigator
             .serviceWorker
-            .register(
-              "./service-worker.js"
-            )
+            .register("./service-worker.js")
             .catch(
               function (error) {
 
