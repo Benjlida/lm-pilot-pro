@@ -1,41 +1,28 @@
-const CACHE = 'lm-pilot-pro-v2';
+const CACHE = 'lm-pilot-pro-v3';
 
 const SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './offline.html',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/icon-maskable-512.png'
+  './hors ligne.html',
+  './icône-192.png',
+  './icône-512.png',
+  './icône-masquable-512.png',
+  './splash-lm-pilot-pro.jpg'
 ];
 
-/* ============================================================
-   INSTALLATION
-   - Création du nouveau cache V2
-   - Mise en cache de la coque de l'application
-   - Activation immédiate du nouveau service worker
-   ============================================================ */
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches
-      .open(CACHE)
+    caches.open(CACHE)
       .then(cache => cache.addAll(SHELL))
   );
 
   self.skipWaiting();
 });
 
-
-/* ============================================================
-   ACTIVATION
-   - Suppression automatique des anciens caches
-   - Le nouveau service worker prend immédiatement le contrôle
-   ============================================================ */
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches
-      .keys()
+    caches.keys()
       .then(keys =>
         Promise.all(
           keys
@@ -47,91 +34,70 @@ self.addEventListener('activate', event => {
   );
 });
 
-
-/* ============================================================
-   FETCH
-   ============================================================ */
 self.addEventListener('fetch', event => {
   const request = event.request;
 
-  // Ne gérer que les requêtes GET.
   if (request.method !== 'GET') {
     return;
   }
 
   const url = new URL(request.url);
 
-
-  /* ----------------------------------------------------------
-     NAVIGATION / PAGES HTML
-     Toujours essayer Internet en premier.
-
-     Très important :
-     cela permet de récupérer le nouveau index.html
-     et donc la nouvelle URL Apps Script.
-     ---------------------------------------------------------- */
+  // Navigation : toujours chercher la version la plus récente sur Internet
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then(response => {
-          const copie = response.clone();
+          const copy = response.clone();
 
-          caches
-            .open(CACHE)
-            .then(cache => cache.put(request, copie));
+          caches.open(CACHE)
+            .then(cache => cache.put(request, copy));
 
           return response;
         })
         .catch(() =>
-          caches
-            .match(request)
-            .then(response => response || caches.match('./offline.html'))
+          caches.match(request)
+            .then(response =>
+              response || caches.match('./hors ligne.html')
+            )
         )
     );
 
     return;
   }
 
-
-  /* ----------------------------------------------------------
-     FICHIERS DU SITE GITHUB
-     Cache d'abord + actualisation en arrière-plan.
-     ---------------------------------------------------------- */
+  // Fichiers GitHub Pages
   if (url.origin === self.location.origin) {
     event.respondWith(
-      caches.match(request).then(cachedResponse => {
-        const networkResponse = fetch(request)
-          .then(response => {
-            if (
-              response &&
-              response.status === 200 &&
-              response.type === 'basic'
-            ) {
-              const copie = response.clone();
+      caches.match(request)
+        .then(cachedResponse => {
+          const networkResponse = fetch(request)
+            .then(response => {
+              if (
+                response &&
+                response.status === 200 &&
+                response.type === 'basic'
+              ) {
+                const copy = response.clone();
 
-              caches
-                .open(CACHE)
-                .then(cache => cache.put(request, copie));
-            }
+                caches.open(CACHE)
+                  .then(cache => cache.put(request, copy));
+              }
 
-            return response;
-          })
-          .catch(() => cachedResponse);
+              return response;
+            })
+            .catch(() => cachedResponse);
 
-        return cachedResponse || networkResponse;
-      })
+          return cachedResponse || networkResponse;
+        })
     );
 
     return;
   }
 
-
-  /* ----------------------------------------------------------
-     URL EXTERNE, notamment Google Apps Script.
-     Toujours utiliser le réseau.
-     On ne met PAS Apps Script en cache.
-     ---------------------------------------------------------- */
+  // Apps Script et contenus externes : réseau uniquement
   event.respondWith(
-    fetch(request).catch(() => caches.match(request))
+    fetch(request)
+      .catch(() => caches.match(request))
   );
 });
