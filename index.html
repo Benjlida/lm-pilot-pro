@@ -17,12 +17,22 @@
 
   <link rel="manifest" href="./manifest.webmanifest">
 
-  <link rel="icon" type="image/png" sizes="192x192" href="./icône-192.png">
-  <link rel="apple-touch-icon" href="./icône-192.png">
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="192x192"
+    href="./icône-192.png"
+  >
+
+  <link
+    rel="apple-touch-icon"
+    href="./icône-192.png"
+  >
 
   <title>LM Pilot Pro UAD</title>
 
   <style>
+
     :root {
       --green: #054b36;
       --green-dark: #023d2c;
@@ -41,44 +51,58 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+
       background: var(--green);
-      font-family: Arial, Helvetica, sans-serif;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
     }
+
 
     /* =========================================================
        APPLICATION
        ========================================================= */
 
     .shell {
+      position: relative;
+
       width: 100%;
       height: 100%;
-      position: relative;
-      background: #ffffff;
+
       overflow: hidden;
+
+      background: #ffffff;
     }
+
 
     iframe {
+      display: block;
+
       width: 100%;
       height: 100%;
+
       border: 0;
-      display: block;
+
       background: #ffffff;
     }
 
+
     /* =========================================================
-       ÉCRAN DE CHARGEMENT
+       ÉCRAN DE DÉMARRAGE
        ========================================================= */
 
     .loading {
       position: absolute;
+
       inset: 0;
+
       z-index: 1000;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      overflow: hidden;
 
-      background: var(--green);
+      background: #054b36;
 
       opacity: 1;
       visibility: visible;
@@ -88,56 +112,64 @@
         visibility 0.45s ease;
     }
 
+
     .loading.hidden {
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
     }
 
+
     /* =========================================================
-       IMAGE SPLASH
+       IMAGE LM PILOT PRO
+
+       IMPORTANT :
+       "contain" oblige le navigateur à afficher
+       TOUTE l'image, y compris ENTREPÔT VALENCE.
        ========================================================= */
 
     .splash-image {
       position: absolute;
 
-      top: 0;
-      left: 50%;
+      inset: 0;
 
-      transform: translateX(-50%);
-
+      width: 100%;
       height: 100%;
-      width: auto;
-
-      max-width: 100%;
 
       object-fit: contain;
-      object-position: center;
+
+      object-position: center center;
 
       display: block;
 
       z-index: 1;
     }
 
+
     /* =========================================================
        BANDEAU DE CHARGEMENT
 
-       IMPORTANT :
-       il est volontairement remonté afin de laisser apparaître
-       "ENTREPÔT VALENCE" situé en bas de l'image.
+       Il est remonté volontairement pour ne pas cacher
+       ENTREPÔT VALENCE.
        ========================================================= */
 
     .loading-status {
       position: absolute;
 
       left: 50%;
-      bottom: 105px;
+
+      /*
+       * On le place suffisamment haut pour laisser
+       * complètement libre le bas de l'image.
+       */
+      bottom: 130px;
 
       transform: translateX(-50%);
 
       z-index: 10;
 
       display: flex;
+
       align-items: center;
       justify-content: center;
 
@@ -165,8 +197,9 @@
       -webkit-backdrop-filter: blur(5px);
     }
 
+
     /* =========================================================
-       POINT ANIMÉ
+       POINT VERT ANIMÉ
        ========================================================= */
 
     .loading-dot {
@@ -182,10 +215,13 @@
       box-shadow:
         0 0 0 7px rgba(215, 255, 49, 0.10);
 
-      animation: pulse 1.3s ease-in-out infinite;
+      animation:
+        pulse 1.3s ease-in-out infinite;
     }
 
+
     @keyframes pulse {
+
       0% {
         transform: scale(0.85);
         opacity: 0.65;
@@ -200,10 +236,12 @@
         transform: scale(0.85);
         opacity: 0.65;
       }
+
     }
 
+
     /* =========================================================
-       FALLBACK AUTHENTIFICATION GOOGLE
+       MESSAGE DE SECOURS GOOGLE
        ========================================================= */
 
     .fallback {
@@ -217,14 +255,18 @@
       z-index: 20;
 
       display: none;
+
       align-items: center;
 
       gap: 10px;
 
       width: max-content;
-      max-width: calc(100% - 30px);
 
-      padding: 10px 12px;
+      max-width:
+        calc(100% - 30px);
+
+      padding:
+        10px 12px;
 
       border-radius: 12px;
 
@@ -239,33 +281,41 @@
         0 8px 28px rgba(0, 0, 0, 0.18);
     }
 
+
     .fallback.show {
       display: flex;
     }
+
 
     .fallback button {
       border: 0;
 
       border-radius: 9px;
 
-      padding: 8px 12px;
+      padding:
+        8px 12px;
 
       cursor: pointer;
 
       color: #ffffff;
-      background: var(--green);
+
+      background:
+        var(--green);
 
       font-weight: 900;
 
       white-space: nowrap;
     }
 
+
     .fallback button:hover {
-      background: var(--green-dark);
+      background:
+        var(--green-dark);
     }
 
+
     /* =========================================================
-       PETITS ÉCRANS
+       TABLETTE / PETIT ÉCRAN
        ========================================================= */
 
     @media (max-width: 900px) {
@@ -273,50 +323,90 @@
       .splash-image {
         width: 100%;
         height: 100%;
+
         object-fit: contain;
+
+        object-position:
+          center center;
       }
 
+
       .loading-status {
-        bottom: 90px;
+
+        bottom: 115px;
 
         min-width: 0;
-        width: auto;
-        max-width: calc(100% - 30px);
 
-        padding: 11px 18px;
+        width: auto;
+
+        max-width:
+          calc(100% - 30px);
+
+        padding:
+          11px 18px;
 
         font-size: 15px;
 
         white-space: nowrap;
       }
 
+
       .loading-dot {
+
         width: 12px;
         height: 12px;
+
         flex-basis: 12px;
       }
+
     }
 
+
     /* =========================================================
-       TRÈS PETITS ÉCRANS
+       MOBILE
        ========================================================= */
 
     @media (max-width: 520px) {
 
-      .loading-status {
-        bottom: 75px;
+      .splash-image {
 
-        width: calc(100% - 40px);
+        width: 100%;
+        height: 100%;
+
+        object-fit: contain;
+
+        object-position:
+          center center;
+      }
+
+
+      .loading-status {
+
+        bottom: 95px;
+
+        width:
+          calc(100% - 40px);
+
+        min-width: 0;
 
         font-size: 13px;
 
-        padding: 10px 14px;
-      }
+        padding:
+          10px 14px;
 
-      .fallback {
-        flex-direction: column;
+        white-space: normal;
+
         text-align: center;
       }
+
+
+      .fallback {
+
+        flex-direction: column;
+
+        text-align: center;
+      }
+
     }
 
   </style>
@@ -327,11 +417,16 @@
 
   <main class="shell">
 
-    <!-- =======================================================
-         ÉCRAN DE DÉMARRAGE
-         ======================================================= -->
 
-    <div id="loading" class="loading">
+    <!-- =====================================================
+         ÉCRAN DE DÉMARRAGE LM PILOT PRO
+         ===================================================== -->
+
+    <div
+      id="loading"
+      class="loading"
+    >
+
 
       <img
         class="splash-image"
@@ -339,7 +434,6 @@
         alt="LM Pilot Pro UAD — Entrepôt Valence"
       >
 
-      <!-- Bandeau remonté pour ne plus masquer Entrepôt Valence -->
 
       <div class="loading-status">
 
@@ -351,12 +445,14 @@
 
       </div>
 
+
     </div>
 
 
-    <!-- =======================================================
+
+    <!-- =====================================================
          APPLICATION GOOGLE APPS SCRIPT
-         ======================================================= -->
+         ===================================================== -->
 
     <iframe
       id="lmFrame"
@@ -366,11 +462,15 @@
     ></iframe>
 
 
-    <!-- =======================================================
-         SOLUTION DE SECOURS GOOGLE
-         ======================================================= -->
 
-    <div id="fallback" class="fallback">
+    <!-- =====================================================
+         SECOURS AUTHENTIFICATION GOOGLE
+         ===================================================== -->
+
+    <div
+      id="fallback"
+      class="fallback"
+    >
 
       <span>
         Si l'authentification Google ne s'affiche pas correctement :
@@ -385,17 +485,20 @@
 
     </div>
 
+
   </main>
+
 
 
   <script>
 
     /* =========================================================
-       URL GOOGLE APPS SCRIPT
+       URL DE TON APPLICATION GOOGLE APPS SCRIPT
        ========================================================= */
 
     const APPS_SCRIPT_URL =
       "https://script.google.com/a/macros/leroymerlin.fr/s/AKfycbx2Mt7fk2DqDT-bH7FruekdPqVLKgF_NdGHOlTleB_7rcTkwgESaJcL3uIdfZLkDzcA6A/exec";
+
 
 
     /* =========================================================
@@ -404,69 +507,109 @@
 
     function targetUrl() {
 
-      const q = new URLSearchParams(window.location.search);
+      const q =
+        new URLSearchParams(
+          window.location.search
+        );
 
-      const page = (q.get("page") || "").trim();
+
+      const page =
+        (q.get("page") || "")
+          .trim();
+
 
       if (!page) {
+
         return APPS_SCRIPT_URL;
+
       }
+
 
       return (
         APPS_SCRIPT_URL +
         "?page=" +
         encodeURIComponent(page)
       );
+
     }
 
 
+
     /* =========================================================
-       ÉLÉMENTS
+       ÉLÉMENTS HTML
        ========================================================= */
 
     const frame =
-      document.getElementById("lmFrame");
+      document.getElementById(
+        "lmFrame"
+      );
+
 
     const loading =
-      document.getElementById("loading");
+      document.getElementById(
+        "loading"
+      );
+
 
     const fallback =
-      document.getElementById("fallback");
+      document.getElementById(
+        "fallback"
+      );
+
 
 
     /* =========================================================
-       CHARGEMENT DE LM PILOT
+       OUVERTURE DE LM PILOT
        ========================================================= */
 
-    frame.src = targetUrl();
+    frame.src =
+      targetUrl();
 
 
-    frame.addEventListener("load", function () {
 
-      /*
-       * Petit délai volontaire :
-       * permet de voir proprement l'écran LM Pilot Pro
-       * avant l'ouverture de l'application.
-       */
+    /* =========================================================
+       FIN DU CHARGEMENT
+       ========================================================= */
 
-      setTimeout(function () {
-
-        loading.classList.add("hidden");
-
-      }, 650);
+    frame.addEventListener(
+      "load",
+      function () {
 
 
-      /*
-       * Affichage du bouton de secours.
-       */
+        /*
+         * On garde le splash visible un court instant.
+         */
 
-      setTimeout(function () {
+        setTimeout(
+          function () {
 
-        fallback.classList.add("show");
+            loading
+              .classList
+              .add("hidden");
 
-      }, 2200);
+          },
+          850
+        );
 
-    });
+
+        /*
+         * Bouton de secours Google.
+         */
+
+        setTimeout(
+          function () {
+
+            fallback
+              .classList
+              .add("show");
+
+          },
+          2500
+        );
+
+      }
+    );
+
 
 
     /* =========================================================
@@ -484,26 +627,38 @@
     }
 
 
+
     /* =========================================================
-       SERVICE WORKER PWA
+       SERVICE WORKER
        ========================================================= */
 
-    if ("serviceWorker" in navigator) {
+    if (
+      "serviceWorker"
+      in navigator
+    ) {
 
-      window.addEventListener("load", function () {
+      window.addEventListener(
+        "load",
+        function () {
 
-        navigator.serviceWorker
-          .register("./service-worker.js")
-          .catch(function (error) {
+          navigator
+            .serviceWorker
+            .register(
+              "./service-worker.js"
+            )
+            .catch(
+              function (error) {
 
-            console.error(
-              "Erreur Service Worker :",
-              error
+                console.error(
+                  "Erreur Service Worker :",
+                  error
+                );
+
+              }
             );
 
-          });
-
-      });
+        }
+      );
 
     }
 
