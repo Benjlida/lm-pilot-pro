@@ -2,95 +2,479 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#054b36">
-  <meta name="description" content="LM Pilot Pro UAD — Centre de pilotage logistique">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#043f30">
+
+  <meta
+    name="description"
+    content="LM Pilot Pro UAD — Centre de pilotage logistique — Entrepôt Valence"
+  >
+
   <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" href="./icons/icon-192.png">
-  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+
+  <!-- ICÔNES DE L'APPLICATION -->
+  <link rel="icon" type="image/png" href="./icône-192.png">
+  <link rel="apple-touch-icon" href="./icône-192.png">
+
   <title>LM Pilot Pro UAD</title>
+
   <style>
-    :root { --green:#054b36; --lime:#d7ff31; --bg:#edf3f0; }
-    * { box-sizing:border-box; }
-    html,body { width:100%; height:100%; margin:0; overflow:hidden; background:var(--bg); font-family:Arial,Helvetica,sans-serif; }
-    .shell { width:100%; height:100%; position:relative; background:#fff; }
-    iframe { width:100%; height:100%; border:0; display:block; background:#fff; }
+    :root {
+      --green-dark: #032f26;
+      --green: #054b36;
+      --green-light: #0b6749;
+      --lime: #b7db20;
+      --bg: #edf3f0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--green-dark);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* =====================================================
+       APPLICATION
+       ===================================================== */
+
+    .shell {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #ffffff;
+    }
+
+    /* =====================================================
+       NOUVEL ÉCRAN DE DÉMARRAGE
+       ===================================================== */
+
     .loading {
-      position:absolute; inset:0; z-index:5; display:grid; place-items:center;
-      background:linear-gradient(145deg,#073d2e,#0b6749);
-      color:#fff; transition:opacity .25s ease;
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle at 75% 35%,
+          rgba(29, 117, 76, 0.28),
+          transparent 42%
+        ),
+        linear-gradient(
+          135deg,
+          #022d24 0%,
+          #054b36 48%,
+          #063d31 100%
+        );
+
+      opacity: 1;
+      visibility: visible;
+
+      transition:
+        opacity 0.55s ease,
+        visibility 0.55s ease;
     }
-    .loading.hidden { opacity:0; pointer-events:none; }
-    .brand { text-align:center; }
-    .mark {
-      width:92px; height:92px; margin:0 auto 18px; display:grid; place-items:center;
-      border:4px solid var(--lime); border-radius:20px; font-size:30px; font-weight:950;
+
+    .loading.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
-    .brand h1 { margin:0; font-size:28px; }
-    .brand p { margin:8px 0 0; color:var(--lime); font-weight:900; }
+
+    /* Image professionnelle */
+
+    .splash-image {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+      object-position: center;
+
+      display: block;
+
+      filter:
+        drop-shadow(0 20px 45px rgba(0, 0, 0, 0.25));
+    }
+
+    /* Petit indicateur de chargement */
+
+    .loading-status {
+      position: absolute;
+
+      left: 50%;
+      bottom: 28px;
+
+      transform: translateX(-50%);
+
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 8px 15px;
+
+      border-radius: 999px;
+
+      background: rgba(3, 47, 38, 0.88);
+
+      color: #ffffff;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      letter-spacing: 0.2px;
+
+      backdrop-filter: blur(8px);
+
+      box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.22);
+    }
+
+    .loading-dot {
+      width: 9px;
+      height: 9px;
+
+      border-radius: 50%;
+
+      background: var(--lime);
+
+      box-shadow:
+        0 0 0 0 rgba(183, 219, 32, 0.6);
+
+      animation: pulse 1.4s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow:
+          0 0 0 0 rgba(183, 219, 32, 0.65);
+      }
+
+      70% {
+        box-shadow:
+          0 0 0 10px rgba(183, 219, 32, 0);
+      }
+
+      100% {
+        box-shadow:
+          0 0 0 0 rgba(183, 219, 32, 0);
+      }
+    }
+
+    /* =====================================================
+       MESSAGE DE SECOURS GOOGLE
+       ===================================================== */
+
     .fallback {
-      position:absolute; left:50%; bottom:18px; transform:translateX(-50%);
-      z-index:6; display:none; gap:8px; align-items:center;
-      padding:10px 12px; border-radius:12px; background:#fff; box-shadow:0 8px 28px rgba(0,0,0,.18);
-      color:#173b30; font-size:13px; font-weight:800;
+      position: absolute;
+
+      left: 50%;
+      bottom: 18px;
+
+      transform: translateX(-50%);
+
+      z-index: 50;
+
+      display: none;
+
+      gap: 12px;
+      align-items: center;
+
+      max-width: calc(100% - 30px);
+
+      padding: 11px 14px;
+
+      border-radius: 13px;
+
+      background: rgba(255, 255, 255, 0.97);
+
+      box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.20);
+
+      color: #173b30;
+
+      font-size: 13px;
+      font-weight: 800;
     }
-    .fallback.show { display:flex; }
+
+    .fallback.show {
+      display: flex;
+    }
+
     .fallback button {
-      border:0; border-radius:9px; padding:8px 10px; cursor:pointer; color:#fff; background:var(--green); font-weight:900;
+      border: 0;
+
+      border-radius: 9px;
+
+      padding: 9px 13px;
+
+      cursor: pointer;
+
+      white-space: nowrap;
+
+      color: #ffffff;
+
+      background: var(--green);
+
+      font-weight: 900;
     }
+
+    .fallback button:hover {
+      background: var(--green-light);
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 700px) {
+
+      .loading-status {
+        bottom: 18px;
+        font-size: 11px;
+      }
+
+      .fallback {
+        width: calc(100% - 24px);
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .fallback button {
+        width: 100%;
+      }
+    }
+
   </style>
 </head>
+
 <body>
+
   <main class="shell">
+
+    <!-- ===================================================
+         SPLASH SCREEN LM PILOT PRO
+         =================================================== -->
+
     <div id="loading" class="loading">
-      <div class="brand">
-        <div class="mark">LM</div>
-        <h1>LM Pilot Pro UAD</h1>
-        <p>Centre de pilotage logistique</p>
+
+      <img
+        src="./splash-lm-pilot-pro.jpg"
+        class="splash-image"
+        alt="LM Pilot Pro UAD — Centre de pilotage logistique"
+      >
+
+      <div class="loading-status">
+        <span class="loading-dot"></span>
+        <span>Chargement de LM Pilot Pro UAD</span>
       </div>
+
     </div>
 
-    <iframe id="lmFrame"
+
+    <!-- ===================================================
+         APPLICATION APPS SCRIPT
+         =================================================== -->
+
+    <iframe
+      id="lmFrame"
       title="LM Pilot Pro UAD"
       allow="fullscreen; clipboard-read; clipboard-write"
-      referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
+
+
+    <!-- ===================================================
+         SOLUTION DE SECOURS AUTHENTIFICATION GOOGLE
+         =================================================== -->
 
     <div id="fallback" class="fallback">
-      <span>Si l'authentification Google ne s'affiche pas correctement dans l'application :</span>
-      <button type="button" onclick="ouvrirExterne()">Ouvrir LM Pilot</button>
+
+      <span>
+        Si l'authentification Google ne s'affiche pas correctement dans l'application :
+      </span>
+
+      <button
+        type="button"
+        onclick="ouvrirExterne()">
+        Ouvrir LM Pilot
+      </button>
+
     </div>
+
   </main>
 
+
   <script>
-    const APPS_SCRIPT_URL = "https://script.google.com/a/macros/leroymerlin.fr/s/AKfycbx2Mt7fk2DqDT-bH7FruekdPqVLKgF_NdGHOlTleB_7rcTkwgESaJcL3uIdfZLkDzcA6A/exec";
+
+    /* =====================================================
+       URL OFFICIELLE DU DÉPLOIEMENT APPS SCRIPT
+       ===================================================== */
+
+    const APPS_SCRIPT_URL =
+      "https://script.google.com/a/macros/leroymerlin.fr/s/AKfycbx2Mt7fk2DqDT-bH7FruekdPqVLKgF_NdGHOlTleB_7rcTkwgESaJcL3uIdfZLkDzcA6A/exec";
+
+
+    /* =====================================================
+       CONSTRUCTION DE L'URL SELON LE MODULE
+       ===================================================== */
 
     function targetUrl() {
-      const q = new URLSearchParams(location.search);
-      const page = (q.get('page') || '').trim();
-      if (!page) return APPS_SCRIPT_URL;
-      return APPS_SCRIPT_URL + '?page=' + encodeURIComponent(page);
+
+      const q =
+        new URLSearchParams(window.location.search);
+
+      const page =
+        (q.get("page") || "").trim();
+
+      if (!page) {
+        return APPS_SCRIPT_URL;
+      }
+
+      return (
+        APPS_SCRIPT_URL +
+        "?page=" +
+        encodeURIComponent(page)
+      );
     }
 
-    const frame = document.getElementById('lmFrame');
-    const loading = document.getElementById('loading');
-    const fallback = document.getElementById('fallback');
+
+    /* =====================================================
+       ÉLÉMENTS
+       ===================================================== */
+
+    const frame =
+      document.getElementById("lmFrame");
+
+    const loading =
+      document.getElementById("loading");
+
+    const fallback =
+      document.getElementById("fallback");
+
+
+    /* Heure de début du splash */
+
+    const splashStart =
+      Date.now();
+
+    /*
+      Le splash restera visible au minimum
+      1,6 seconde.
+
+      Cela évite qu'il disparaisse trop vite.
+    */
+
+    const MIN_SPLASH_TIME = 1600;
+
+
+    /* =====================================================
+       CHARGEMENT APPLICATION
+       ===================================================== */
 
     frame.src = targetUrl();
 
-    frame.addEventListener('load', () => {
-      loading.classList.add('hidden');
-      setTimeout(() => fallback.classList.add('show'), 1800);
-    });
+
+    frame.addEventListener(
+      "load",
+      function () {
+
+        const elapsed =
+          Date.now() - splashStart;
+
+        const remaining =
+          Math.max(
+            0,
+            MIN_SPLASH_TIME - elapsed
+          );
+
+        setTimeout(
+          function () {
+
+            loading.classList.add("hidden");
+
+          },
+          remaining
+        );
+
+
+        /*
+          Afficher le bouton de secours
+          quelques secondes après.
+        */
+
+        setTimeout(
+          function () {
+
+            fallback.classList.add("show");
+
+          },
+          remaining + 1800
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       OUVERTURE EXTERNE
+       ===================================================== */
 
     function ouvrirExterne() {
-      window.open(targetUrl(), '_blank', 'noopener');
+
+      window.open(
+        targetUrl(),
+        "_blank",
+        "noopener"
+      );
+
     }
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js').catch(console.error);
-      });
+
+    /* =====================================================
+       SERVICE WORKER
+       ===================================================== */
+
+    if ("serviceWorker" in navigator) {
+
+      window.addEventListener(
+        "load",
+        function () {
+
+          navigator.serviceWorker
+            .register("./service-worker.js")
+            .catch(console.error);
+
+        }
+      );
+
     }
+
   </script>
+
 </body>
 </html>
