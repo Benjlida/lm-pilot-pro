@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LM Pilot Pro UAD — Pilotage du jour V5</title>
+  <style>
+    :root{
+      --lm:#00553f;--lm2:#0b6b50;--lime:#cfff18;--bg:#edf3f0;--card:#fff;
+      --text:#082f28;--muted:#66766f;--line:#d8e3de;--prepa:#5a35b5;
+      --c5:#e86f00;--rec:#1479b8;--danger:#c72f2f;--warn:#d98a00;
+      --shadow:0 7px 20px rgba(0,74,53,.10);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);font-family:Arial,Helvetica,sans-serif;color:var(--text)}
+    body{min-height:100vh}
+    .app{width:100%;max-width:1920px;margin:auto;padding:10px 12px 84px}
+    .top{
+      min-height:82px;border-radius:18px;background:linear-gradient(100deg,#043d2e,#075a42 70%,#1f7942);
+      color:#fff;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px;
+      padding:12px 18px;box-shadow:var(--shadow);position:sticky;top:0;z-index:8
+    }
+    .brand{font-size:16px;font-weight:950;line-height:1.1;white-space:nowrap}
+    .title{font-size:28px;font-weight:950;letter-spacing:.2px}
+    .title span{color:var(--lime)}
+    .clock{text-align:right;font-size:12px;line-height:1.25}.clock strong{font-size:17px}
+    .setup{
+      margin-top:10px;background:#fff;border-radius:16px;padding:10px 12px;box-shadow:var(--shadow);
+      display:grid;grid-template-columns:1.05fr 1.2fr .9fr .72fr 1.05fr .9fr .85fr;gap:8px
+    }
+    .field{background:#f5f8f6;border:1px solid var(--line);border-radius:11px;padding:8px}
+    label{display:block;font-size:10px;font-weight:950;color:#425b52;text-transform:uppercase;margin-bottom:5px}
+    input,select{
+      width:100%;border:1px solid #cbd9d3;background:#fff;border-radius:8px;padding:8px 9px;
+      font-size:13px;font-weight:800;color:var(--text)
+    }
+    .effectif{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+    .miniKpi{background:#fff;border:1px solid var(--line);border-radius:8px;text-align:center;padding:5px}
+    .miniKpi b{display:block;font-size:18px}.miniKpi small{font-size:9px;color:var(--muted)}
+    .summary{
+      margin-top:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:8px
+    }
+    .sum{background:#fff;border-radius:12px;padding:9px 11px;box-shadow:var(--shadow);border-top:4px solid var(--lm)}
+    .sum small{font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:900}
+    .sum strong{display:block;margin-top:3px;font-size:21px}
+    .main{
+      margin-top:10px;display:grid;grid-template-columns:minmax(0,1fr) 285px;gap:10px;align-items:start
+    }
+    .work{display:grid;grid-template-columns:1.20fr 1.08fr 1.08fr;gap:7px;min-width:0}
+    .panel{background:#fff;border-radius:15px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+    .panelHead{padding:10px 12px;color:#fff;font-weight:950;font-size:18px;display:flex;justify-content:space-between;align-items:center}
+    .panelHead.prepa{background:linear-gradient(90deg,#4b28a0,var(--prepa))}
+    .panelHead.c5{background:linear-gradient(90deg,#c65b00,var(--c5))}
+    .panelHead.rec{background:linear-gradient(90deg,#075f96,var(--rec))}
+    .count{font-size:12px;background:rgba(255,255,255,.18);padding:4px 8px;border-radius:999px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px}
+    .stat{background:#f5f8f6;border:1px solid var(--line);border-radius:9px;padding:6px;text-align:center}
+    .stat small{display:block;font-size:9px;color:var(--muted)}.stat b{font-size:17px}
+    .tableWrap{padding:0 8px 8px}
+    table{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed}
+    th{font-size:9px;text-align:left;color:var(--muted);text-transform:uppercase;padding:5px 4px;border-bottom:1px solid var(--line)}
+    td{padding:4px;border-bottom:1px solid #edf2ef;vertical-align:middle}
+    td:first-child{font-weight:950}
+    td input{padding:6px 5px;font-size:11px;min-width:0;width:100%}
+    .adv{font-weight:950;font-size:11px;white-space:nowrap}
+    .bar{height:6px;background:#e5ece8;border-radius:999px;overflow:hidden;margin-top:3px}
+    .bar>i{display:block;height:100%;background:var(--lm2);width:0}
+    .right{display:grid;gap:10px}
+    .card{background:#fff;border-radius:15px;padding:10px 11px;box-shadow:var(--shadow);border:1px solid var(--line)}
+    .card h3{margin:0 0 8px;font-size:15px}
+    .result{display:grid;grid-template-columns:1fr auto;gap:6px 10px;font-size:12px}
+    .result span{padding:4px 0;border-bottom:1px solid #edf2ef}.result b{padding:4px 0;border-bottom:1px solid #edf2ef}
+    .alert{padding:8px 9px;border-radius:9px;font-size:11px;font-weight:800;margin-top:6px;background:#edf7f1;border-left:4px solid var(--lm)}
+    .alert.orange{background:#fff2de;border-left-color:var(--warn);color:#7d4c00}
+    .alert.rouge{background:#fdeaea;border-left-color:var(--danger);color:#8a2222}
+    .hint{font-size:11px;line-height:1.35;color:#38554b;background:#edf7f1;border-radius:10px;padding:8px;border-left:4px solid var(--lm2)}
+    .footer{
+      position:fixed;bottom:0;left:0;right:0;background:rgba(237,243,240,.96);backdrop-filter:blur(5px);
+      border-top:1px solid #cddbd5;padding:8px 12px;display:grid;grid-template-columns:1fr 1fr 1.2fr .8fr;gap:8px;z-index:12
+    }
+    button{border:0;border-radius:10px;padding:11px;font-size:12px;font-weight:950;cursor:pointer;box-shadow:var(--shadow)}
+    .calc{background:var(--lm);color:#fff}.save{background:#2e9b48;color:#fff}.plan{background:#147dc0;color:#fff}.reset{background:#e4e9e6;color:#29443a}
+    .loading{position:fixed;inset:0;background:rgba(255,255,255,.78);display:none;place-items:center;z-index:30;font-size:18px;font-weight:950;color:var(--lm)}
+    .status{font-size:11px;margin-top:6px;font-weight:800}
+    @media(max-width:1250px){
+      .setup{grid-template-columns:repeat(3,1fr)}
+      .main{grid-template-columns:1fr}
+      .right{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:900px){
+      .work{grid-template-columns:1fr}.right{grid-template-columns:1fr}
+      .summary{grid-template-columns:repeat(2,1fr)}
+      .top{grid-template-columns:1fr auto}.brand{display:none}.title{font-size:22px}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">LEROY MERLIN<br>ENTREPÔT VALENCE</div>
+    <div class="title">LM PILOT PRO UAD <span>• PILOTAGE DU JOUR</span></div>
+    <div class="clock">Dernière mise à jour<br><strong id="updated">—</strong></div>
+  </header>
+
+  <section class="setup">
+    <div class="field"><label>Date</label><input id="date" type="date"></div>
+    <div class="field"><label>Shift</label>
+      <select id="shift">
+        <option>Matin 5h-13h</option><option>Matin 6h-13h</option>
+        <option>Après-midi 13h-21h</option><option>Après-midi 13h30-21h</option><option>Journée complète</option>
+      </select>
+    </div>
+    <div class="field"><label>Effectif</label><div class="effectif">
+      <div class="miniKpi"><b id="presents">0</b><small>Présents</small></div>
+      <div class="miniKpi"><b id="reserveTop">0</b><small>Réserve</small></div>
+    </div></div>
+    <div class="field"><label>Pause (h)</label><input id="pause" type="number" step="0.25" min="0" value="0.5"></div>
+    <div class="field"><label>Mode calcul</label><select id="modeCalcul"><option value="AUTO">Auto équilibré</option><option value="MANUEL">Manuel</option></select></div>
+    <div class="field"><label>Mode prépa</label><select id="modePrepa"><option value="PRISES">Prises</option><option value="HEURES">Heures</option></select></div>
+    <div class="field"><label>Heures shift</label><input id="heuresShift" type="number" step="0.25" min="1" value="8"></div>
+  </section>
+
+  <section class="summary">
+    <div class="sum"><small>Préparation affectée</small><strong id="sPrepa">0</strong></div>
+    <div class="sum"><small>Caristes affectés</small><strong id="sC5">0</strong></div>
+    <div class="sum"><small>Réception affectée</small><strong id="sRec">0</strong></div>
+    <div class="sum"><small>Total affecté</small><strong id="sTotal">0</strong></div>
+    <div class="sum"><small>Couverture globale</small><strong id="sCoverage">0%</strong></div>
+  </section>
+
+  <section class="main">
+    <div class="work">
+      <article class="panel">
+        <div class="panelHead prepa">📦 PRÉPARATION <span class="count" id="bPrepaHead">0 besoin</span></div>
+        <div class="stats">
+          <div class="stat"><small>Heures restantes</small><b id="hPrepa">0</b></div>
+          <div class="stat"><small>Besoin calculé</small><b id="bPrepa">0</b></div>
+          <div class="stat"><small>Objectif shift</small><b id="cPrepa">0%</b></div>
+        </div>
+        <div class="tableWrap"><table>
+          <thead><tr><th style="width:18%">Chemin</th><th style="width:23%">Charge initiale</th><th style="width:22%">Reliquat</th><th style="width:20%">Perf/h</th><th style="width:17%">Av.</th></tr></thead>
+          <tbody id="tbodyPrepa"></tbody>
+        </table></div>
+      </article>
+
+      <article class="panel">
+        <div class="panelHead c5">🚜 CARISTES C5 <span class="count" id="bC5Head">0 besoin</span></div>
+        <div class="stats">
+          <div class="stat"><small>Heures restantes</small><b id="hC5">0</b></div>
+          <div class="stat"><small>Besoin calculé</small><b id="bC5">0</b></div>
+          <div class="stat"><small>Objectif shift</small><b id="cC5">0%</b></div>
+        </div>
+        <div class="tableWrap"><table>
+          <thead><tr><th style="width:25%">Activité</th><th style="width:23%">Charge initiale</th><th style="width:20%">Reliquat</th><th style="width:18%">Perf/h</th><th style="width:14%">Av.</th></tr></thead>
+          <tbody id="tbodyC5"></tbody>
+        </table></div>
+      </article>
+
+      <article class="panel">
+        <div class="panelHead rec">🚛 RÉCEPTION <span class="count" id="bRecHead">0 besoin</span></div>
+        <div class="stats">
+          <div class="stat"><small>Heures restantes</small><b id="hRec">0</b></div>
+          <div class="stat"><small>Besoin calculé</small><b id="bRec">0</b></div>
+          <div class="stat"><small>Objectif shift</small><b id="cRec">0%</b></div>
+        </div>
+        <div class="tableWrap"><table>
+          <thead><tr><th style="width:24%">Élément</th><th style="width:23%">Charge initiale</th><th style="width:20%">Reliquat</th><th style="width:20%">Temps unité</th><th style="width:13%">Av.</th></tr></thead>
+          <tbody id="tbodyRec"></tbody>
+        </table></div>
+      </article>
+    </div>
+
+    <aside class="right">
+      <div class="card">
+        <h3>💡 Lecture manager</h3>
+        <div class="hint">Saisis la <b>charge initiale</b> puis le <b>reliquat restant</b>. L’avancement se calcule automatiquement. Pour la préparation, garde <b>Prises</b> si tu saisis des quantités (ex. 140 prises). Utilise <b>Heures</b> uniquement si les reliquats saisis sont réellement des heures.</div>
+      </div>
+      <div class="card">
+        <h3>📊 Résultat du calcul</h3>
+        <div class="result">
+          <span>Préparation</span><b id="rPrepa">0</b>
+          <span>Caristes</span><b id="rC5">0</b>
+          <span>Réception</span><b id="rRec">0</b>
+          <span>Total besoin</span><b id="rTotal">0</b>
+          <span>Effectif disponible</span><b id="rDispo">0</b>
+          <span>Réserve</span><b id="rReserve">0</b>
+        </div>
+      </div>
+      <div class="card"><h3>⚠️ Alertes</h3><div id="alerts"></div><div id="status" class="status"></div></div>
+    </aside>
+  </section>
+</div>
+
+<footer class="footer">
+  <button class="calc" onclick="calculer(false)">CALCULER</button>
+  <button class="save" onclick="calculer(true)">ENREGISTRER</button>
+  <button class="plan" onclick="genererPlanning()">GÉNÉRER LE PLANNING</button>
+  <button class="reset" onclick="reinitialiser()">RÉINITIALISER</button>
+</footer>
+
+<div class="loading" id="loading">Traitement en cours…</div>
+
+<script>
+let appData=null;
+const initialPrepa={},initialC5={},initialRec={};
+
+document.addEventListener('DOMContentLoaded',charger);
+
+function loading(v){document.getElementById('loading').style.display=v?'grid':'none'}
+function status(t,err){const e=document.getElementById('status');e.textContent=t||'';e.style.color=err?'#a32626':'#07553f'}
+
+function charger(){
+  loading(true); status('');
+  google.script.run
+    .withSuccessHandler(data=>{
+      appData=data||{};
+      remplir(appData);
+      calculer(false);
+    })
+    .withFailureHandler(erreur)
+    .LP_UAD_PILOTAGE_CHARGER_DONNEES();
+}
+
+function remplir(data){
+  val('date',data.date);
+  val('shift',normaliserShift(data.shift));
+  val('pause',data.pause);
+  val('modeCalcul',data.modeCalcul==='MANUEL'?'MANUEL':'AUTO');
+  val('modePrepa',data.modePrepa==='HEURES'?'HEURES':'PRISES');
+  val('heuresShift',data.heuresShift||8);
+  text('presents',(data.effectif&&data.effectif.presents)||0);
+  text('rDispo',(data.effectif&&data.effectif.effectifDisponible)||0);
+  text('updated',data.derniereMaj||'—');
+
+  document.getElementById('tbodyPrepa').innerHTML=(data.chemins||[]).map((x,i)=>{
+    if(initialPrepa[i]===undefined) initialPrepa[i]=Number(x.reliquat||0);
+    return rowPrepa(x,i,initialPrepa[i]);
+  }).join('');
+
+  document.getElementById('tbodyC5').innerHTML=(data.caristes||[]).map((x,i)=>{
+    if(initialC5[i]===undefined) initialC5[i]=Number(x.reliquat||0);
+    return rowC5(x,i,initialC5[i]);
+  }).join('');
+
+  document.getElementById('tbodyRec').innerHTML=(data.reception||[]).map((x,i)=>{
+    if(initialRec[i]===undefined) initialRec[i]=Number(x.charge||0);
+    return rowRec(x,i,initialRec[i]);
+  }).join('');
+
+  recalculerAvancements();
+}
+
+function rowPrepa(x,i,init){
+  return `<tr>
+    <td>${esc(x.chemin)}</td>
+    <td><input type="number" min="0" step="1" data-prepa="${i}" data-field="initial" value="${num(init)}" oninput="recalculerAvancements()"></td>
+    <td><input type="number" min="0" step="1" data-prepa="${i}" data-field="reliquat" value="${num(x.reliquat)}" oninput="recalculerAvancements()"></td>
+    <td><input type="number" min="0" step="1" data-prepa="${i}" data-field="perf" value="${num(x.perf)}"></td>
+    <td class="adv"><span id="advP${i}">0%</span><div class="bar"><i id="barP${i}"></i></div></td>
+  </tr>`;
+}
+function rowC5(x,i,init){
+  return `<tr>
+    <td>${esc(x.activite)}</td>
+    <td><input type="number" min="0" step="1" data-c5="${i}" data-field="initial" value="${num(init)}" oninput="recalculerAvancements()"></td>
+    <td><input type="number" min="0" step="1" data-c5="${i}" data-field="reliquat" value="${num(x.reliquat)}" oninput="recalculerAvancements()"></td>
+    <td><input type="number" min="0" step="0.1" data-c5="${i}" data-field="perf" value="${num(x.perf)}"></td>
+    <td class="adv"><span id="advC${i}">0%</span><div class="bar"><i id="barC${i}"></i></div></td>
+  </tr>`;
+}
+function rowRec(x,i,init){
+  return `<tr>
+    <td>${esc(x.element)}</td>
+    <td><input type="number" min="0" step="1" data-rec="${i}" data-field="initial" value="${num(init)}" oninput="recalculerAvancements()"></td>
+    <td><input type="number" min="0" step="1" data-rec="${i}" data-field="charge" value="${num(x.charge)}" oninput="recalculerAvancements()"></td>
+    <td><input type="number" min="0" step="0.05" data-rec="${i}" data-field="tempsUnite" value="${num(x.tempsUnite)}"></td>
+    <td class="adv"><span id="advR${i}">0%</span><div class="bar"><i id="barR${i}"></i></div></td>
+  </tr>`;
+}
+
+function avancement(initial,reste){
+  initial=nombre(initial);reste=nombre(reste);
+  if(initial<=0) return 0;
+  return Math.max(0,Math.min(100,Math.round(((initial-reste)/initial)*100)));
+}
+function setAdv(prefix,i,p){text(`adv${prefix}${i}`,p+'%');const b=document.getElementById(`bar${prefix}${i}`);if(b)b.style.width=p+'%'}
+function recalculerAvancements(){
+  (appData?.chemins||[]).forEach((_,i)=>setAdv('P',i,avancement(q(`[data-prepa="${i}"][data-field="initial"]`),q(`[data-prepa="${i}"][data-field="reliquat"]`))));
+  (appData?.caristes||[]).forEach((_,i)=>setAdv('C',i,avancement(q(`[data-c5="${i}"][data-field="initial"]`),q(`[data-c5="${i}"][data-field="reliquat"]`))));
+  (appData?.reception||[]).forEach((_,i)=>setAdv('R',i,avancement(q(`[data-rec="${i}"][data-field="initial"]`),q(`[data-rec="${i}"][data-field="charge"]`))));
+}
+
+function collecter(){
+  const chemins=(appData.chemins||[]).map((x,i)=>({
+    chemin:x.chemin,
+    reliquat:nombre(q(`[data-prepa="${i}"][data-field="reliquat"]`)),
+    perf:nombre(q(`[data-prepa="${i}"][data-field="perf"]`))
+  }));
+  const caristes=(appData.caristes||[]).map((x,i)=>({
+    activite:x.activite,
+    reliquat:nombre(q(`[data-c5="${i}"][data-field="reliquat"]`)),
+    perf:nombre(q(`[data-c5="${i}"][data-field="perf"]`))
+  }));
+  const reception=(appData.reception||[]).map((x,i)=>({
+    element:x.element,
+    charge:nombre(q(`[data-rec="${i}"][data-field="charge"]`)),
+    tempsUnite:nombre(q(`[data-rec="${i}"][data-field="tempsUnite"]`))
+  }));
+  return{
+    date:val('date'),shift:val('shift'),pause:nombre(val('pause')),
+    modeCalcul:val('modeCalcul'),
+    modePrepa:val('modePrepa'),
+    heuresShift:nombre(val('heuresShift')),
+    chemins,caristes,reception
+  };
+}
+
+function calculer(enregistrer){
+  if(!appData)return;
+  loading(true);status('');
+  const payload=collecter();
+  const runner=google.script.run.withSuccessHandler(r=>{
+    afficherResultat(r||{});loading(false);status(enregistrer?'Données enregistrées et recalculées.':'Calcul actualisé.');
+  }).withFailureHandler(erreur);
+  if(enregistrer) runner.LP_UAD_PILOTAGE_ENREGISTRER_ET_CALCULER(payload);
+  else runner.LP_UAD_PILOTAGE_CALCULER_SEUL(payload);
+}
+
+function afficherResultat(r){
+  const eff=r.effectif||{},charges=r.charges||{},bes=r.besoinArrondi||{},rep=r.repartition||{},couv=r.couverture||{};
+  text('updated',r.derniereMaj||'—');text('presents',eff.presents||0);text('reserveTop',r.reserve||0);
+  text('hPrepa',fixe(charges.preparationHeures,1));text('hC5',fixe(charges.caristesHeures,1));text('hRec',fixe(charges.receptionHeures,1));
+  text('bPrepa',bes.preparation||0);text('bC5',bes.caristes||0);text('bRec',bes.reception||0);
+  text('bPrepaHead',(bes.preparation||0)+' besoin');text('bC5Head',(bes.caristes||0)+' besoin');text('bRecHead',(bes.reception||0)+' besoin');
+  text('cPrepa',(couv.preparation||0)+'%');text('cC5',(couv.caristes||0)+'%');text('cRec',(couv.reception||0)+'%');
+  text('rPrepa',rep.preparation||0);text('rC5',rep.caristes||0);text('rRec',rep.reception||0);text('rTotal',r.totalBesoin||0);
+  text('rDispo',eff.effectifDisponible||0);text('rReserve',r.reserve||0);
+  text('sPrepa',rep.preparation||0);text('sC5',rep.caristes||0);text('sRec',rep.reception||0);text('sTotal',r.totalAffecte||0);
+  const coverage=r.totalBesoin>0?Math.min(100,Math.round((Number(r.totalAffecte||0)/Number(r.totalBesoin||1))*100)):100;
+  text('sCoverage',coverage+'%');
+  document.getElementById('alerts').innerHTML=(r.alertes||[]).map(a=>`<div class="alert ${esc(a.niveau||'')}">${esc(a.texte||'')}</div>`).join('')||'<div class="alert">Aucune alerte.</div>';
+}
+
+function genererPlanning(){
+  if(!confirm('Générer le planning avec les données actuellement enregistrées ?'))return;
+  loading(true);status('');
+  google.script.run.withSuccessHandler(r=>{loading(false);status(r&&r.message?r.message:'Planning généré.');})
+    .withFailureHandler(erreur).LP_UAD_MOTEUR_GENERER_DEPUIS_COCKPIT();
+}
+function reinitialiser(){
+  if(!confirm('Réinitialiser les reliquats du Pilotage du jour ?'))return;
+  loading(true);
+  google.script.run.withSuccessHandler(data=>{
+    Object.keys(initialPrepa).forEach(k=>delete initialPrepa[k]);
+    Object.keys(initialC5).forEach(k=>delete initialC5[k]);
+    Object.keys(initialRec).forEach(k=>delete initialRec[k]);
+    appData=data||{};remplir(appData);calculer(false);
+  }).withFailureHandler(erreur).LP_UAD_PILOTAGE_REINITIALISER();
+}
+function erreur(e){loading(false);status((e&&e.message)?e.message:String(e),true)}
+function normaliserShift(s){
+  const v=String(s||'');
+  if(v.includes('13h15'))return 'Après-midi 13h-21h';
+  return v||'Matin 5h-13h';
+}
+function q(sel){const e=document.querySelector(sel);return e?e.value:0}
+function val(id,v){const e=document.getElementById(id);if(arguments.length===2)e.value=v==null?'':v;return e.value}
+function text(id,v){const e=document.getElementById(id);if(e)e.textContent=v==null?'':v}
+function nombre(v){const n=Number(String(v??'').replace(',','.'));return Number.isFinite(n)?n:0}
+function num(v){return Number(v||0)}
+function fixe(v,d){return Number(v||0).toFixed(d).replace('.',',')}
+function esc(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+</script>
+</body>
+</html>
