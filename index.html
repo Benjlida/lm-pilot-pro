@@ -17,19 +17,16 @@
 
   <link rel="manifest" href="./manifest.webmanifest">
 
-  <!-- ICÔNES DE L'APPLICATION -->
-  <link rel="icon" type="image/png" href="./icon-192.png">
-  <link rel="apple-touch-icon" href="./icon-192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icône-192.png">
+  <link rel="apple-touch-icon" href="./icône-192.png">
 
   <title>LM Pilot Pro UAD</title>
 
   <style>
-
     :root {
-      --green-dark: #032f26;
       --green: #054b36;
-      --green-light: #0b6749;
-      --lime: #b7db20;
+      --green-dark: #023d2c;
+      --lime: #d7ff31;
       --bg: #edf3f0;
     }
 
@@ -42,14 +39,15 @@
       width: 100%;
       height: 100%;
       margin: 0;
+      padding: 0;
       overflow: hidden;
-      background: var(--green-dark);
+      background: var(--green);
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* =====================================================
+    /* =========================================================
        APPLICATION
-       ===================================================== */
+       ========================================================= */
 
     .shell {
       width: 100%;
@@ -67,39 +65,27 @@
       background: #ffffff;
     }
 
-
-    /* =====================================================
-       ÉCRAN DE DÉMARRAGE
-       ===================================================== */
+    /* =========================================================
+       ÉCRAN DE CHARGEMENT
+       ========================================================= */
 
     .loading {
       position: absolute;
       inset: 0;
-      z-index: 100;
+      z-index: 1000;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      background:
-        radial-gradient(
-          circle at 75% 35%,
-          rgba(29, 117, 76, 0.28),
-          transparent 42%
-        ),
-        linear-gradient(
-          135deg,
-          #022d24 0%,
-          #054b36 48%,
-          #063d31 100%
-        );
+      background: var(--green);
 
       opacity: 1;
       visibility: visible;
 
       transition:
-        opacity 0.55s ease,
-        visibility 0.55s ease;
+        opacity 0.45s ease,
+        visibility 0.45s ease;
     }
 
     .loading.hidden {
@@ -108,112 +94,117 @@
       pointer-events: none;
     }
 
-
-    /* =====================================================
-       IMAGE SPLASH LM PILOT PRO
-       ===================================================== */
+    /* =========================================================
+       IMAGE SPLASH
+       ========================================================= */
 
     .splash-image {
-      width: 100%;
+      position: absolute;
+
+      top: 0;
+      left: 50%;
+
+      transform: translateX(-50%);
+
       height: 100%;
+      width: auto;
+
+      max-width: 100%;
 
       object-fit: contain;
       object-position: center;
 
       display: block;
 
-      filter:
-        drop-shadow(
-          0 20px 45px rgba(0, 0, 0, 0.25)
-        );
+      z-index: 1;
     }
 
+    /* =========================================================
+       BANDEAU DE CHARGEMENT
 
-    /* =====================================================
-       INDICATEUR DE CHARGEMENT
-
-       Placé volontairement tout en bas pour laisser visible
-       "ENTREPÔT VALENCE" sur l'image.
-       ===================================================== */
+       IMPORTANT :
+       il est volontairement remonté afin de laisser apparaître
+       "ENTREPÔT VALENCE" situé en bas de l'image.
+       ========================================================= */
 
     .loading-status {
       position: absolute;
 
       left: 50%;
-      bottom: 8px;
+      bottom: 105px;
 
       transform: translateX(-50%);
+
+      z-index: 10;
 
       display: flex;
       align-items: center;
       justify-content: center;
 
-      gap: 10px;
+      gap: 12px;
 
-      padding: 7px 14px;
+      min-width: 405px;
 
-      border-radius: 999px;
+      padding: 13px 25px;
 
-      background: rgba(3, 47, 38, 0.88);
+      border-radius: 30px;
+
+      background: rgba(3, 72, 52, 0.94);
 
       color: #ffffff;
 
-      font-size: 12px;
+      font-size: 18px;
       font-weight: 800;
 
       letter-spacing: 0.2px;
 
-      white-space: nowrap;
-
-      backdrop-filter: blur(8px);
-
       box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.22);
+        0 8px 28px rgba(0, 0, 0, 0.28);
+
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
     }
 
-
-    /* =====================================================
+    /* =========================================================
        POINT ANIMÉ
-       ===================================================== */
+       ========================================================= */
 
     .loading-dot {
-      width: 9px;
-      height: 9px;
+      width: 15px;
+      height: 15px;
 
-      flex: 0 0 9px;
+      flex: 0 0 15px;
 
       border-radius: 50%;
 
       background: var(--lime);
 
       box-shadow:
-        0 0 0 0 rgba(183, 219, 32, 0.60);
+        0 0 0 7px rgba(215, 255, 49, 0.10);
 
-      animation: pulse 1.4s infinite;
+      animation: pulse 1.3s ease-in-out infinite;
     }
 
     @keyframes pulse {
-
       0% {
-        box-shadow:
-          0 0 0 0 rgba(183, 219, 32, 0.65);
+        transform: scale(0.85);
+        opacity: 0.65;
       }
 
-      70% {
-        box-shadow:
-          0 0 0 10px rgba(183, 219, 32, 0);
+      50% {
+        transform: scale(1.15);
+        opacity: 1;
       }
 
       100% {
-        box-shadow:
-          0 0 0 0 rgba(183, 219, 32, 0);
+        transform: scale(0.85);
+        opacity: 0.65;
       }
     }
 
-
-    /* =====================================================
-       MESSAGE DE SECOURS GOOGLE
-       ===================================================== */
+    /* =========================================================
+       FALLBACK AUTHENTIFICATION GOOGLE
+       ========================================================= */
 
     .fallback {
       position: absolute;
@@ -223,28 +214,29 @@
 
       transform: translateX(-50%);
 
-      z-index: 50;
+      z-index: 20;
 
       display: none;
-
-      gap: 12px;
       align-items: center;
 
+      gap: 10px;
+
+      width: max-content;
       max-width: calc(100% - 30px);
 
-      padding: 11px 14px;
+      padding: 10px 12px;
 
-      border-radius: 13px;
+      border-radius: 12px;
 
-      background: rgba(255, 255, 255, 0.97);
-
-      box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.20);
+      background: #ffffff;
 
       color: #173b30;
 
       font-size: 13px;
       font-weight: 800;
+
+      box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.18);
     }
 
     .fallback.show {
@@ -256,44 +248,74 @@
 
       border-radius: 9px;
 
-      padding: 9px 13px;
+      padding: 8px 12px;
 
       cursor: pointer;
 
-      white-space: nowrap;
-
       color: #ffffff;
-
       background: var(--green);
 
       font-weight: 900;
+
+      white-space: nowrap;
     }
 
     .fallback button:hover {
-      background: var(--green-light);
+      background: var(--green-dark);
     }
 
-
-    /* =====================================================
+    /* =========================================================
        PETITS ÉCRANS
-       ===================================================== */
+       ========================================================= */
 
-    @media (max-width: 700px) {
+    @media (max-width: 900px) {
+
+      .splash-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
 
       .loading-status {
-        bottom: 6px;
-        font-size: 10px;
-        padding: 6px 11px;
+        bottom: 90px;
+
+        min-width: 0;
+        width: auto;
+        max-width: calc(100% - 30px);
+
+        padding: 11px 18px;
+
+        font-size: 15px;
+
+        white-space: nowrap;
+      }
+
+      .loading-dot {
+        width: 12px;
+        height: 12px;
+        flex-basis: 12px;
+      }
+    }
+
+    /* =========================================================
+       TRÈS PETITS ÉCRANS
+       ========================================================= */
+
+    @media (max-width: 520px) {
+
+      .loading-status {
+        bottom: 75px;
+
+        width: calc(100% - 40px);
+
+        font-size: 13px;
+
+        padding: 10px 14px;
       }
 
       .fallback {
-        width: calc(100% - 24px);
         flex-direction: column;
         text-align: center;
-      }
-
-      .fallback button {
-        width: 100%;
       }
     }
 
@@ -305,21 +327,19 @@
 
   <main class="shell">
 
+    <!-- =======================================================
+         ÉCRAN DE DÉMARRAGE
+         ======================================================= -->
 
-    <!-- ===================================================
-         SPLASH SCREEN LM PILOT PRO
-         =================================================== -->
-
-    <div
-      id="loading"
-      class="loading"
-    >
+    <div id="loading" class="loading">
 
       <img
-        src="./splash-lm-pilot-pro.jpg"
         class="splash-image"
-        alt="LM Pilot Pro UAD — Centre de pilotage logistique"
+        src="./splash-lm-pilot-pro.jpg"
+        alt="LM Pilot Pro UAD — Entrepôt Valence"
       >
+
+      <!-- Bandeau remonté pour ne plus masquer Entrepôt Valence -->
 
       <div class="loading-status">
 
@@ -334,29 +354,26 @@
     </div>
 
 
-    <!-- ===================================================
+    <!-- =======================================================
          APPLICATION GOOGLE APPS SCRIPT
-         =================================================== -->
+         ======================================================= -->
 
     <iframe
       id="lmFrame"
       title="LM Pilot Pro UAD"
       allow="fullscreen; clipboard-read; clipboard-write"
-      referrerpolicy="strict-origin-when-cross-origin">
-    </iframe>
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
 
 
-    <!-- ===================================================
-         SOLUTION DE SECOURS AUTHENTIFICATION GOOGLE
-         =================================================== -->
+    <!-- =======================================================
+         SOLUTION DE SECOURS GOOGLE
+         ======================================================= -->
 
-    <div
-      id="fallback"
-      class="fallback"
-    >
+    <div id="fallback" class="fallback">
 
       <span>
-        Si l'authentification Google ne s'affiche pas correctement dans l'application :
+        Si l'authentification Google ne s'affiche pas correctement :
       </span>
 
       <button
@@ -373,27 +390,23 @@
 
   <script>
 
-    /* =====================================================
-       URL APPS SCRIPT
-       ===================================================== */
+    /* =========================================================
+       URL GOOGLE APPS SCRIPT
+       ========================================================= */
 
     const APPS_SCRIPT_URL =
       "https://script.google.com/a/macros/leroymerlin.fr/s/AKfycbx2Mt7fk2DqDT-bH7FruekdPqVLKgF_NdGHOlTleB_7rcTkwgESaJcL3uIdfZLkDzcA6A/exec";
 
 
-    /* =====================================================
+    /* =========================================================
        CONSTRUCTION DE L'URL
-       ===================================================== */
+       ========================================================= */
 
     function targetUrl() {
 
-      const q =
-        new URLSearchParams(
-          window.location.search
-        );
+      const q = new URLSearchParams(window.location.search);
 
-      const page =
-        (q.get("page") || "").trim();
+      const page = (q.get("page") || "").trim();
 
       if (!page) {
         return APPS_SCRIPT_URL;
@@ -407,9 +420,9 @@
     }
 
 
-    /* =====================================================
+    /* =========================================================
        ÉLÉMENTS
-       ===================================================== */
+       ========================================================= */
 
     const frame =
       document.getElementById("lmFrame");
@@ -421,73 +434,44 @@
       document.getElementById("fallback");
 
 
-    /* =====================================================
-       DURÉE MINIMALE DU SPLASH
-       ===================================================== */
+    /* =========================================================
+       CHARGEMENT DE LM PILOT
+       ========================================================= */
 
-    const splashStart =
-      Date.now();
-
-    const MIN_SPLASH_TIME =
-      1600;
+    frame.src = targetUrl();
 
 
-    /* =====================================================
-       OUVERTURE DE LM PILOT
-       ===================================================== */
+    frame.addEventListener("load", function () {
 
-    frame.src =
-      targetUrl();
+      /*
+       * Petit délai volontaire :
+       * permet de voir proprement l'écran LM Pilot Pro
+       * avant l'ouverture de l'application.
+       */
 
+      setTimeout(function () {
 
-    frame.addEventListener(
-      "load",
-      function () {
+        loading.classList.add("hidden");
 
-        const elapsed =
-          Date.now() - splashStart;
-
-        const remaining =
-          Math.max(
-            0,
-            MIN_SPLASH_TIME - elapsed
-          );
+      }, 650);
 
 
-        /* Masquer le splash */
+      /*
+       * Affichage du bouton de secours.
+       */
 
-        setTimeout(
-          function () {
+      setTimeout(function () {
 
-            loading.classList.add(
-              "hidden"
-            );
+        fallback.classList.add("show");
 
-          },
-          remaining
-        );
+      }, 2200);
 
-
-        /* Bouton de secours */
-
-        setTimeout(
-          function () {
-
-            fallback.classList.add(
-              "show"
-            );
-
-          },
-          remaining + 1800
-        );
-
-      }
-    );
+    });
 
 
-    /* =====================================================
+    /* =========================================================
        OUVERTURE EXTERNE
-       ===================================================== */
+       ========================================================= */
 
     function ouvrirExterne() {
 
@@ -500,28 +484,26 @@
     }
 
 
-    /* =====================================================
-       SERVICE WORKER
-       ===================================================== */
+    /* =========================================================
+       SERVICE WORKER PWA
+       ========================================================= */
 
-    if (
-      "serviceWorker" in navigator
-    ) {
+    if ("serviceWorker" in navigator) {
 
-      window.addEventListener(
-        "load",
-        function () {
+      window.addEventListener("load", function () {
 
-          navigator.serviceWorker
-            .register(
-              "./service-worker.js"
-            )
-            .catch(
-              console.error
+        navigator.serviceWorker
+          .register("./service-worker.js")
+          .catch(function (error) {
+
+            console.error(
+              "Erreur Service Worker :",
+              error
             );
 
-        }
-      );
+          });
+
+      });
 
     }
 
