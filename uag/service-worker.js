@@ -1,4 +1,4 @@
-const CACHE = 'lm-pilot-pro-uag-v2';
+const CACHE = 'lm-pilot-pro-uag-v3';
 const CACHE_PREFIX = 'lm-pilot-pro-uag-';
 
 const SHELL = [
@@ -8,7 +8,8 @@ const SHELL = [
   './offline.html',
   './icon-uag.svg',
   './icon-uag-192.png',
-  './icon-uag-512.png'
+  './icon-uag-512.png',
+  './splash-lm-pilot-pro-uag.jpg'
 ];
 
 self.addEventListener('install', event => {
