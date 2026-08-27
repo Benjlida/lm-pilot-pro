@@ -1,10 +1,10 @@
-const CACHE = 'lm-pilot-pro-v6';
+const CACHE = 'lm-pilot-pro-v7';
 
 const SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './hors ligne.html',
+  './offline.html',
   './icon-192.png',
   './icon-512.png',
   './icon-maskable-512.png',
@@ -62,7 +62,7 @@ self.addEventListener('fetch', event => {
         .catch(() =>
           caches.match(request)
             .then(response =>
-              response || caches.match('./hors ligne.html')
+              response || caches.match('./offline.html')
             )
         )
     );
