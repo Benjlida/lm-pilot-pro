@@ -1,0 +1,41 @@
+{
+  "id": "./",
+  "name": "LM Pilot Pro UAG",
+  "short_name": "LM Pilot UAG",
+  "description": "Centre de pilotage logistique UAG — Entrepôt Valence",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#033d2d",
+  "theme_color": "#075c43",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./icon-uag.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Accueil LM Pilot Pro UAG",
+      "short_name": "Accueil UAG",
+      "description": "Ouvrir l’accueil UAG",
+      "url": "./",
+      "icons": [
+        {
+          "src": "./icon-uag.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}
