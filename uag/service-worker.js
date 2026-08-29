@@ -1,4 +1,4 @@
-const CACHE = 'lm-pilot-pro-uag-v5';
+const CACHE = 'lm-pilot-pro-uag-v4';
 const CACHE_PREFIX = 'lm-pilot-pro-uag-';
 
 const SHELL = [
