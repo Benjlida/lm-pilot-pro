@@ -1,4 +1,4 @@
-const CACHE = 'lm-pilot-pro-v7';
+const CACHE = 'lm-pilot-pro-v8';
 
 const SHELL = [
   './',
