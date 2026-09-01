@@ -4,7 +4,7 @@ Ce dossier contient la couche PWA de LM Pilot Pro. Le moteur métier et les donn
 
 ## URL Apps Script utilisée
 
-https://script.google.com/a/macros/leroymerlin.fr/s/AKfycbxnVjiuKP8PbK86oAwpYb1K7_wgyCt73jN6BHemP2CRfv9QuA7u7uA7B3de_A3kf5eX/exec
+https://script.google.com/a/macros/leroymerlin.fr/s/AKfycbyfeUzE6OUSzY9TzVSyoyhF9HgNavVBI4dCBXQYRTZ2qSGQjyIa3d1xWxfN05o2TwYUOw/exec
 
 ## Fichiers
 
@@ -12,19 +12,16 @@ https://script.google.com/a/macros/leroymerlin.fr/s/AKfycbxnVjiuKP8PbK86oAwpYb1K
 - `manifest.webmanifest` : nom, mode standalone, icônes et raccourcis.
 - `service-worker.js` : cache de la coque PWA et page de secours.
 - `offline.html` : message hors connexion.
-- `icons/` : icônes 192, 512 et maskable.
+- `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` : icônes de l'application.
+- `splash-lm-pilot-pro.jpg` : écran de démarrage UAD.
 - `firebase.json` : configuration facultative pour Firebase Hosting.
 
 ## Option A — GitHub Pages
 
-1. Créer un dépôt GitHub, par exemple `lm-pilot-pro`.
-2. Envoyer le contenu de ce dossier à la racine du dépôt.
-3. Dans GitHub : Settings > Pages.
-4. Source : `Deploy from a branch`.
-5. Branche : `main`, dossier `/root`.
-6. Attendre l'URL HTTPS fournie par GitHub Pages.
-7. Ouvrir cette URL dans Microsoft Edge ou Chrome.
-8. Cliquer sur Installer l'application.
+1. Publier la branche `main` avec GitHub Pages.
+2. Ouvrir l'URL HTTPS fournie par GitHub Pages.
+3. Ouvrir le site dans Microsoft Edge ou Chrome.
+4. Installer l'application.
 
 Important : si le compte Google d'entreprise bloque l'ouverture dans l'iframe, utiliser le bouton "Ouvrir LM Pilot" de secours.
 
