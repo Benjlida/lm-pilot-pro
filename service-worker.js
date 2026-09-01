@@ -1,4 +1,4 @@
-const CACHE = 'lm-pilot-pro-v7';
+const CACHE = 'lm-pilot-pro-v8';
 
 const SHELL = [
   './',
@@ -37,17 +37,12 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
 
-  // On ne traite que les requêtes GET
   if (request.method !== 'GET') {
     return;
   }
 
   const url = new URL(request.url);
 
-  // ==========================================================
-  // 1. NAVIGATION
-  // Toujours essayer Internet en premier
-  // ==========================================================
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
@@ -70,18 +65,12 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // ==========================================================
-  // 2. FICHIERS DE L'APPLICATION GITHUB PAGES
-  // Cache + mise à jour depuis Internet
-  // ==========================================================
   if (url.origin === self.location.origin) {
     event.respondWith(
       caches.match(request)
         .then(cachedResponse => {
-
           const networkResponse = fetch(request)
             .then(response => {
-
               if (
                 response &&
                 response.status === 200 &&
@@ -104,10 +93,6 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // ==========================================================
-  // 3. APPS SCRIPT ET CONTENUS EXTERNES
-  // Réseau en priorité
-  // ==========================================================
   event.respondWith(
     fetch(request)
       .catch(() => caches.match(request))
